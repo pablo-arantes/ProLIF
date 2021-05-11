@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- van der Waals contact interaction based on the sum of vdW radii of two atoms
+- van der Waals contact interaction class based on the sum of vdW radii of two atoms
 ### Changed
 - Default residue name and number: `UNK` and `0` are now the default values if `None` or
   `''` is given
@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 - Residues with a resnumber of `0` are not converted to `None` anymore (Issue #13)
+- Fingerprint instantiated with an unknown interaction name will now raise a `NameError`
 
 ## [0.3.1] - 2021-02-02
 ### Added
