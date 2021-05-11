@@ -1,7 +1,8 @@
 import pytest
 from rdkit import RDLogger
 from prolif.fingerprint import Fingerprint
-from prolif.interactions import _INTERACTIONS, Interaction, get_mapindex
+from prolif.interactions import (_INTERACTIONS, Interaction, get_mapindex,
+                                 VdWContact)
 from .test_base import ligand_mol
 from . import mol2factory
 
@@ -77,6 +78,8 @@ class TestInteractions:
         ("metalacceptor", "ligand", "metal", True),
         ("metalacceptor", "ligand", "metal_false", False),
         ("metalacceptor", "metal", "ligand", False),
+        ("vdwcontact", "benzene", "etf", True),
+        ("vdwcontact", "xb_acceptor_false_xar", "cation_false", False),
     ], indirect=["mol1", "mol2"])
     def test_interaction(self, fingerprint, func_name, mol1, mol2, expected):
         interaction = getattr(fingerprint, func_name)
@@ -104,3 +107,8 @@ class TestInteractions:
     def test_get_mapindex(self, index):
         parent_index = get_mapindex(ligand_mol[0], index)
         assert parent_index == index
+
+    def test_vdwcontact_tolerance_error(self):
+        with pytest.raises(ValueError,
+                           match="`tolerance` must be 0 or positive"):
+            VdWContact(tolerance=-1)

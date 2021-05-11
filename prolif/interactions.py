@@ -43,6 +43,7 @@ from .utils import (
 import numpy as np
 from rdkit.Chem import MolFromSmarts
 from rdkit import Geometry
+from MDAnalysis.topology.tables import vdwradii
 
 _INTERACTIONS = {}
 
@@ -448,3 +449,33 @@ class MetalAcceptor(_BaseMetallic):
     def detect(self, ligand, residue):
         bit, ires, ilig = super().detect(residue, ligand)
         return bit, ilig, ires
+
+
+class VdWContact(Interaction):
+    """Interaction based on the van der Waals radii of interacting atoms.
+    
+    Parameters
+    ----------
+    tolerance : float
+        Tolerance added to the sum of vdW radii of atoms before comparing to
+        the interatomic distance. If ``distance <= sum_vdw + tolerance`` the
+        atoms are identified as a contact
+    """
+    def __init__(self, tolerance=.1):
+        if tolerance >= 0:
+            self.tolerance = tolerance
+        else:
+            raise ValueError("`tolerance` must be 0 or positive")
+
+    def detect(self, ligand, residue):
+        lxyz = ligand.GetConformer()
+        rxyz = residue.GetConformer()
+        for la, ra in itertools.product(ligand.GetAtoms(), residue.GetAtoms()):
+            vdw = (vdwradii[la.GetSymbol().upper()] + 
+                   vdwradii[ra.GetSymbol().upper()] +
+                   self.tolerance)
+            dist = (lxyz.GetAtomPosition(la.GetIdx())
+                        .Distance(rxyz.GetAtomPosition(ra.GetIdx())))
+            if dist <= vdw:
+                return True, la.GetIdx(), ra.GetIdx()
+        return False, None, None
