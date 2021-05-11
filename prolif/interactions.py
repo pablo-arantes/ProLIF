@@ -460,6 +460,10 @@ class VdWContact(Interaction):
         Tolerance added to the sum of vdW radii of atoms before comparing to
         the interatomic distance. If ``distance <= sum_vdw + tolerance`` the
         atoms are identified as a contact
+
+    Raises
+    ------
+    ValueError : `tolerance` parameter cannot be negative
     """
     def __init__(self, tolerance=.1):
         if tolerance >= 0:
