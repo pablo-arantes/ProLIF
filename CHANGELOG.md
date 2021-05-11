@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- van der Waals contact interaction based on the sum of vdW radii of two atoms
 ### Changed
 - Default residue name and number: `UNK` and `0` are now the default values if `None` or
   `''` is given
