@@ -465,19 +465,24 @@ class VdWContact(Interaction):
     ------
     ValueError : `tolerance` parameter cannot be negative
     """
-    def __init__(self, tolerance=.1):
+    def __init__(self, tolerance=.5):
         if tolerance >= 0:
             self.tolerance = tolerance
         else:
             raise ValueError("`tolerance` must be 0 or positive")
+        self._vdw_cache = {}
 
     def detect(self, ligand, residue):
         lxyz = ligand.GetConformer()
         rxyz = residue.GetConformer()
         for la, ra in itertools.product(ligand.GetAtoms(), residue.GetAtoms()):
-            vdw = (vdwradii[la.GetSymbol().upper()] + 
-                   vdwradii[ra.GetSymbol().upper()] +
-                   self.tolerance)
+            lig = la.GetSymbol().upper()
+            res = ra.GetSymbol().upper()
+            try:
+                vdw = self._vdw_cache[(lig, res)]
+            except KeyError:
+                vdw = vdwradii[lig] + vdwradii[res] + self.tolerance
+                self._vdw_cache[(lig, res)] = vdw
             dist = (lxyz.GetAtomPosition(la.GetIdx())
                         .Distance(rxyz.GetAtomPosition(ra.GetIdx())))
             if dist <= vdw:

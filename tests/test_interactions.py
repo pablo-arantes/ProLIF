@@ -1,5 +1,6 @@
 import pytest
 from rdkit import RDLogger
+from MDAnalysis.topology.tables import vdwradii
 from prolif.fingerprint import Fingerprint
 from prolif.interactions import (_INTERACTIONS, Interaction, get_mapindex,
                                  VdWContact)
@@ -112,3 +113,14 @@ class TestInteractions:
         with pytest.raises(ValueError,
                            match="`tolerance` must be 0 or positive"):
             VdWContact(tolerance=-1)
+
+    @pytest.mark.parametrize("mol1, mol2", [
+        "benzene", "cation"
+    ], indirect=["mol1", "mol2"])
+    def test_vdwcontact_cache(self, mol1, mol2):
+        vdw = VdWContact()
+        assert vdw._vdw_cache == {}
+        vdw.detect(mol1, mol2)
+        for (lig, res), value in vdw._vdw_cache.items():
+            vdw_dist = vdwradii[lig] + vdwradii[res] + vdw.tolerance
+            assert vdw_dist == value
