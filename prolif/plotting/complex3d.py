@@ -50,14 +50,14 @@ class Complex3D:
     ----------
     COLORS : dict
         Dictionnary of colors used in the plot for interactions.
-    LIGAND_STYLE : Dict[str, Dict] = {"stick": {"colorscheme": "cyanCarbon"}}
+    LIGAND_STYLE : Dict[str, Dict] = {"stick": {"colorscheme": "greenCarbon"}}
         Style object passed to ``3Dmol.js`` for the ligand.
     RESIDUES_STYLE : Dict[str, Dict] = {"stick": {}}
         Style object passed to ``3Dmol.js`` for the protein residues involved in
         interactions.
     PROTEIN_STYLE : Dict[str, Dict] = {"cartoon": {"style": "edged"}}
         Style object passed to ``3Dmol.js`` for the entire protein.
-    PEPTIDE_STYLE : Dict[str, Dict] = "cartoon": {"style": "edged", "colorscheme": "cyanCarbon"}
+    PEPTIDE_STYLE : Dict[str, Dict] = "cartoon": {"style": "edged", "colorscheme": "greenCarbon"}
         Style object passed to ``3Dmol.js`` for the ligand as a peptide if appropriate.
     PEPTIDE_THRESHOLD : int = 2
         Ligands with this number of residues or more will be displayed using
@@ -83,11 +83,11 @@ class Complex3D:
     """  # noqa: E501
 
     COLORS: ClassVar[Dict[str, str]] = {**separated_interaction_colors}
-    LIGAND_STYLE: ClassVar[Dict] = {"stick": {"colorscheme": "cyanCarbon"}}
+    LIGAND_STYLE: ClassVar[Dict] = {"stick": {"colorscheme": "greenCarbon"}}
     RESIDUES_STYLE: ClassVar[Dict] = {"stick": {}}
     PROTEIN_STYLE: ClassVar[Dict] = {"cartoon": {"style": "edged"}}
     PEPTIDE_STYLE: ClassVar[Dict] = {
-        "cartoon": {"style": "edged", "colorscheme": "cyanCarbon"},
+        "cartoon": {"style": "edged", "colorscheme": "greenCarbon"},
     }
     PEPTIDE_THRESHOLD: ClassVar[int] = 5
     LIGAND_DISPLAYED_ATOM: ClassVar[Dict] = {
