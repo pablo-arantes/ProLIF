@@ -513,7 +513,7 @@ class Complex3D:
             var png = viewer_{uid}.pngURI()
             var a = document.createElement('a')
             a.href = png
-            a.download = f"{file_name}.png"
+            a.download = "{file_name}.png"
             a.click()
             a.remove()
             """),
