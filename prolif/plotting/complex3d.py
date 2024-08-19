@@ -497,7 +497,7 @@ class Complex3D:
         self._models[resid] = self._mid
 
     @requires("IPython.display")
-    def save_png(self) -> None:
+    def save_png(self,file_name) -> None:
         """Saves the current state of the 3D viewer to a PNG. Not available outside of a
         notebook.
 
@@ -513,7 +513,7 @@ class Complex3D:
             var png = viewer_{uid}.pngURI()
             var a = document.createElement('a')
             a.href = png
-            a.download = "prolif-3d.png"
+            a.download = f"{file_name}.png"
             a.click()
             a.remove()
             """),
